@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.6.16 on 2018-04-14 20:55:15.
+ * Generated for Laravel 5.6.17 on 2018-04-20 01:30:35.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -11569,13 +11569,13 @@ namespace Illuminate\Support\Facades {
          * @param array $rules
          * @param array $messages
          * @param array $customAttributes
-         * @return void 
+         * @return array 
          * @throws \Illuminate\Validation\ValidationException
          * @static 
          */ 
         public static function validate($data, $rules, $messages = array(), $customAttributes = array())
         {
-            \Illuminate\Validation\Factory::validate($data, $rules, $messages, $customAttributes);
+            return \Illuminate\Validation\Factory::validate($data, $rules, $messages, $customAttributes);
         }
         
         /**
@@ -12440,512 +12440,548 @@ namespace Illuminate\Support\Facades {
  
 }
 
-namespace Tymon\JWTAuth\Facades { 
+namespace Barryvdh\Debugbar { 
 
-    class JWTAuth {
+    class Facade {
         
         /**
-         * Attempt to authenticate the user and return the token.
+         * Enable the Debugbar and boot, if not already booted.
          *
-         * @param array $credentials
-         * @return false|string 
          * @static 
          */ 
-        public static function attempt($credentials)
+        public static function enable()
         {
-            return \Tymon\JWTAuth\JWTAuth::attempt($credentials);
+            return \Barryvdh\Debugbar\LaravelDebugbar::enable();
         }
         
         /**
-         * Authenticate a user via a token.
+         * Boot the debugbar (add collectors, renderer and listener)
          *
-         * @return \Tymon\JWTAuth\Contracts\JWTSubject|false 
          * @static 
          */ 
-        public static function authenticate()
+        public static function boot()
         {
-            return \Tymon\JWTAuth\JWTAuth::authenticate();
+            return \Barryvdh\Debugbar\LaravelDebugbar::boot();
         }
         
         /**
-         * Alias for authenticate().
+         * 
          *
-         * @return \Tymon\JWTAuth\Contracts\JWTSubject|false 
          * @static 
          */ 
-        public static function toUser()
+        public static function shouldCollect($name, $default = false)
         {
-            return \Tymon\JWTAuth\JWTAuth::toUser();
+            return \Barryvdh\Debugbar\LaravelDebugbar::shouldCollect($name, $default);
         }
         
         /**
-         * Get the authenticated user.
+         * Adds a data collector
          *
-         * @return \Tymon\JWTAuth\Contracts\JWTSubject 
-         * @static 
-         */ 
-        public static function user()
-        {
-            return \Tymon\JWTAuth\JWTAuth::user();
-        }
-        
-        /**
-         * Generate a token for a given subject.
-         *
-         * @param \Tymon\JWTAuth\Contracts\JWTSubject $subject
-         * @return string 
-         * @static 
-         */ 
-        public static function fromSubject($subject)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::fromSubject($subject);
-        }
-        
-        /**
-         * Alias to generate a token for a given user.
-         *
-         * @param \Tymon\JWTAuth\Contracts\JWTSubject $user
-         * @return string 
-         * @static 
-         */ 
-        public static function fromUser($user)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::fromUser($user);
-        }
-        
-        /**
-         * Refresh an expired token.
-         *
-         * @param bool $forceForever
-         * @param bool $resetClaims
-         * @return string 
-         * @static 
-         */ 
-        public static function refresh($forceForever = false, $resetClaims = false)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::refresh($forceForever, $resetClaims);
-        }
-        
-        /**
-         * Invalidate a token (add it to the blacklist).
-         *
-         * @param bool $forceForever
+         * @param \Barryvdh\Debugbar\DataCollectorInterface $collector
+         * @throws DebugBarException
          * @return $this 
          * @static 
          */ 
-        public static function invalidate($forceForever = false)
+        public static function addCollector($collector)
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::invalidate($forceForever);
+            return \Barryvdh\Debugbar\LaravelDebugbar::addCollector($collector);
         }
         
         /**
-         * Alias to get the payload, and as a result checks that
-         * the token is valid i.e. not expired or blacklisted.
+         * Handle silenced errors
          *
-         * @throws \Tymon\JWTAuth\Exceptions\JWTException
-         * @return \Tymon\JWTAuth\Payload 
+         * @param $level
+         * @param $message
+         * @param string $file
+         * @param int $line
+         * @param array $context
+         * @throws \ErrorException
          * @static 
          */ 
-        public static function checkOrFail()
+        public static function handleError($level, $message, $file = '', $line = 0, $context = array())
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::checkOrFail();
+            return \Barryvdh\Debugbar\LaravelDebugbar::handleError($level, $message, $file, $line, $context);
         }
         
         /**
-         * Check that the token is valid.
+         * Starts a measure
          *
-         * @param bool $getPayload
-         * @return \Tymon\JWTAuth\Payload|bool 
+         * @param string $name Internal name, used to stop the measure
+         * @param string $label Public name
          * @static 
          */ 
-        public static function check($getPayload = false)
+        public static function startMeasure($name, $label = null)
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::check($getPayload);
+            return \Barryvdh\Debugbar\LaravelDebugbar::startMeasure($name, $label);
         }
         
         /**
-         * Get the token.
+         * Stops a measure
          *
-         * @return \Tymon\JWTAuth\Token|null 
+         * @param string $name
          * @static 
          */ 
-        public static function getToken()
+        public static function stopMeasure($name)
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::getToken();
+            return \Barryvdh\Debugbar\LaravelDebugbar::stopMeasure($name);
         }
         
         /**
-         * Parse the token from the request.
+         * Adds an exception to be profiled in the debug bar
          *
-         * @throws \Tymon\JWTAuth\Exceptions\JWTException
-         * @return $this 
+         * @param \Exception $e
+         * @deprecated in favor of addThrowable
          * @static 
          */ 
-        public static function parseToken()
+        public static function addException($e)
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::parseToken();
+            return \Barryvdh\Debugbar\LaravelDebugbar::addException($e);
         }
         
         /**
-         * Get the raw Payload instance.
+         * Adds an exception to be profiled in the debug bar
          *
-         * @return \Tymon\JWTAuth\Payload 
+         * @param \Exception $e
          * @static 
          */ 
-        public static function getPayload()
+        public static function addThrowable($e)
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::getPayload();
+            return \Barryvdh\Debugbar\LaravelDebugbar::addThrowable($e);
         }
         
         /**
-         * Alias for getPayload().
+         * Returns a JavascriptRenderer for this instance
          *
-         * @return \Tymon\JWTAuth\Payload 
+         * @param string $baseUrl
+         * @param string $basePathng
+         * @return \Barryvdh\Debugbar\JavascriptRenderer 
          * @static 
          */ 
-        public static function payload()
+        public static function getJavascriptRenderer($baseUrl = null, $basePath = null)
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::payload();
+            return \Barryvdh\Debugbar\LaravelDebugbar::getJavascriptRenderer($baseUrl, $basePath);
         }
         
         /**
-         * Convenience method to get a claim value.
+         * Modify the response and inject the debugbar (or data in headers)
          *
-         * @param string $claim
-         * @return mixed 
+         * @param \Symfony\Component\HttpFoundation\Request $request
+         * @param \Symfony\Component\HttpFoundation\Response $response
+         * @return \Symfony\Component\HttpFoundation\Response 
          * @static 
          */ 
-        public static function getClaim($claim)
+        public static function modifyResponse($request, $response)
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::getClaim($claim);
+            return \Barryvdh\Debugbar\LaravelDebugbar::modifyResponse($request, $response);
         }
         
         /**
-         * Create a Payload instance.
+         * Check if the Debugbar is enabled
          *
-         * @param \Tymon\JWTAuth\Contracts\JWTSubject $subject
-         * @return \Tymon\JWTAuth\Payload 
+         * @return boolean 
          * @static 
          */ 
-        public static function makePayload($subject)
+        public static function isEnabled()
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::makePayload($subject);
+            return \Barryvdh\Debugbar\LaravelDebugbar::isEnabled();
         }
         
         /**
-         * Check if the subject model matches the one saved in the token.
-         *
-         * @param string|object $model
-         * @return bool 
-         * @static 
-         */ 
-        public static function checkSubjectModel($model)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::checkSubjectModel($model);
-        }
-        
-        /**
-         * Set the token.
-         *
-         * @param \Tymon\JWTAuth\Token|string $token
-         * @return $this 
-         * @static 
-         */ 
-        public static function setToken($token)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::setToken($token);
-        }
-        
-        /**
-         * Unset the current token.
-         *
-         * @return $this 
-         * @static 
-         */ 
-        public static function unsetToken()
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::unsetToken();
-        }
-        
-        /**
-         * Set the request instance.
-         *
-         * @param \Illuminate\Http\Request $request
-         * @return $this 
-         * @static 
-         */ 
-        public static function setRequest($request)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::setRequest($request);
-        }
-        
-        /**
-         * Set whether the subject should be "locked".
-         *
-         * @param bool $lock
-         * @return $this 
-         * @static 
-         */ 
-        public static function lockSubject($lock)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::lockSubject($lock);
-        }
-        
-        /**
-         * Get the Manager instance.
-         *
-         * @return \Tymon\JWTAuth\Manager 
-         * @static 
-         */ 
-        public static function manager()
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::manager();
-        }
-        
-        /**
-         * Get the Parser instance.
-         *
-         * @return \Tymon\JWTAuth\Http\Parser\Parser 
-         * @static 
-         */ 
-        public static function parser()
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::parser();
-        }
-        
-        /**
-         * Get the Payload Factory.
-         *
-         * @return \Tymon\JWTAuth\Factory 
-         * @static 
-         */ 
-        public static function factory()
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::factory();
-        }
-        
-        /**
-         * Get the Blacklist.
-         *
-         * @return \Tymon\JWTAuth\Blacklist 
-         * @static 
-         */ 
-        public static function blacklist()
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::blacklist();
-        }
-        
-        /**
-         * Set the custom claims.
-         *
-         * @param array $customClaims
-         * @return $this 
-         * @static 
-         */ 
-        public static function customClaims($customClaims)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::customClaims($customClaims);
-        }
-        
-        /**
-         * Alias to set the custom claims.
-         *
-         * @param array $customClaims
-         * @return $this 
-         * @static 
-         */ 
-        public static function claims($customClaims)
-        {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::claims($customClaims);
-        }
-        
-        /**
-         * Get the custom claims.
+         * Collects the data from the collectors
          *
          * @return array 
          * @static 
          */ 
-        public static function getCustomClaims()
+        public static function collect()
         {
-            //Method inherited from \Tymon\JWTAuth\JWT            
-            return \Tymon\JWTAuth\JWTAuth::getCustomClaims();
+            return \Barryvdh\Debugbar\LaravelDebugbar::collect();
         }
-         
-    }
-
-    class JWTFactory {
         
         /**
-         * Create the Payload instance.
+         * Injects the web debug toolbar into the given Response.
          *
-         * @param bool $resetClaims
-         * @return \Tymon\JWTAuth\Payload 
+         * @param \Symfony\Component\HttpFoundation\Response $response A Response instance
+         * Based on https://github.com/symfony/WebProfilerBundle/blob/master/EventListener/WebDebugToolbarListener.php
          * @static 
          */ 
-        public static function make($resetClaims = false)
+        public static function injectDebugbar($response)
         {
-            return \Tymon\JWTAuth\Factory::make($resetClaims);
+            return \Barryvdh\Debugbar\LaravelDebugbar::injectDebugbar($response);
         }
         
         /**
-         * Empty the claims collection.
+         * Disable the Debugbar
          *
-         * @return $this 
          * @static 
          */ 
-        public static function emptyClaims()
+        public static function disable()
         {
-            return \Tymon\JWTAuth\Factory::emptyClaims();
+            return \Barryvdh\Debugbar\LaravelDebugbar::disable();
         }
         
         /**
-         * Build and get the Claims Collection.
+         * Adds a measure
          *
-         * @return \Tymon\JWTAuth\Claims\Collection 
+         * @param string $label
+         * @param float $start
+         * @param float $end
          * @static 
          */ 
-        public static function buildClaimsCollection()
+        public static function addMeasure($label, $start, $end)
         {
-            return \Tymon\JWTAuth\Factory::buildClaimsCollection();
+            return \Barryvdh\Debugbar\LaravelDebugbar::addMeasure($label, $start, $end);
         }
         
         /**
-         * Get a Payload instance with a claims collection.
+         * Utility function to measure the execution of a Closure
          *
-         * @param \Tymon\JWTAuth\Claims\Collection $claims
-         * @return \Tymon\JWTAuth\Payload 
+         * @param string $label
+         * @param \Closure $closure
          * @static 
          */ 
-        public static function withClaims($claims)
+        public static function measure($label, $closure)
         {
-            return \Tymon\JWTAuth\Factory::withClaims($claims);
+            return \Barryvdh\Debugbar\LaravelDebugbar::measure($label, $closure);
         }
         
         /**
-         * Set the default claims to be added to the Payload.
-         *
-         * @param array $claims
-         * @return $this 
-         * @static 
-         */ 
-        public static function setDefaultClaims($claims)
-        {
-            return \Tymon\JWTAuth\Factory::setDefaultClaims($claims);
-        }
-        
-        /**
-         * Helper to set the ttl.
-         *
-         * @param int $ttl
-         * @return $this 
-         * @static 
-         */ 
-        public static function setTTL($ttl)
-        {
-            return \Tymon\JWTAuth\Factory::setTTL($ttl);
-        }
-        
-        /**
-         * Helper to get the ttl.
-         *
-         * @return int 
-         * @static 
-         */ 
-        public static function getTTL()
-        {
-            return \Tymon\JWTAuth\Factory::getTTL();
-        }
-        
-        /**
-         * Get the default claims.
+         * Collect data in a CLI request
          *
          * @return array 
          * @static 
          */ 
-        public static function getDefaultClaims()
+        public static function collectConsole()
         {
-            return \Tymon\JWTAuth\Factory::getDefaultClaims();
+            return \Barryvdh\Debugbar\LaravelDebugbar::collectConsole();
         }
         
         /**
-         * Get the PayloadValidator instance.
+         * Adds a message to the MessagesCollector
+         * 
+         * A message can be anything from an object to a string
          *
-         * @return \Tymon\JWTAuth\Validators\PayloadValidator 
+         * @param mixed $message
+         * @param string $label
          * @static 
          */ 
-        public static function validator()
+        public static function addMessage($message, $label = 'info')
         {
-            return \Tymon\JWTAuth\Factory::validator();
+            return \Barryvdh\Debugbar\LaravelDebugbar::addMessage($message, $label);
         }
         
         /**
-         * Set the custom claims.
+         * Checks if a data collector has been added
          *
-         * @param array $customClaims
+         * @param string $name
+         * @return boolean 
+         * @static 
+         */ 
+        public static function hasCollector($name)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::hasCollector($name);
+        }
+        
+        /**
+         * Returns a data collector
+         *
+         * @param string $name
+         * @return \DebugBar\DataCollectorInterface 
+         * @throws DebugBarException
+         * @static 
+         */ 
+        public static function getCollector($name)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getCollector($name);
+        }
+        
+        /**
+         * Returns an array of all data collectors
+         *
+         * @return \DebugBar\array[DataCollectorInterface] 
+         * @static 
+         */ 
+        public static function getCollectors()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getCollectors();
+        }
+        
+        /**
+         * Sets the request id generator
+         *
+         * @param \DebugBar\RequestIdGeneratorInterface $generator
          * @return $this 
          * @static 
          */ 
-        public static function customClaims($customClaims)
+        public static function setRequestIdGenerator($generator)
         {
-            return \Tymon\JWTAuth\Factory::customClaims($customClaims);
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::setRequestIdGenerator($generator);
         }
         
         /**
-         * Alias to set the custom claims.
+         * 
          *
-         * @param array $customClaims
+         * @return \DebugBar\RequestIdGeneratorInterface 
+         * @static 
+         */ 
+        public static function getRequestIdGenerator()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getRequestIdGenerator();
+        }
+        
+        /**
+         * Returns the id of the current request
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getCurrentRequestId()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getCurrentRequestId();
+        }
+        
+        /**
+         * Sets the storage backend to use to store the collected data
+         *
+         * @param \DebugBar\StorageInterface $storage
          * @return $this 
          * @static 
          */ 
-        public static function claims($customClaims)
+        public static function setStorage($storage = null)
         {
-            return \Tymon\JWTAuth\Factory::claims($customClaims);
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::setStorage($storage);
         }
         
         /**
-         * Get the custom claims.
+         * 
+         *
+         * @return \DebugBar\StorageInterface 
+         * @static 
+         */ 
+        public static function getStorage()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getStorage();
+        }
+        
+        /**
+         * Checks if the data will be persisted
+         *
+         * @return boolean 
+         * @static 
+         */ 
+        public static function isDataPersisted()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::isDataPersisted();
+        }
+        
+        /**
+         * Sets the HTTP driver
+         *
+         * @param \DebugBar\HttpDriverInterface $driver
+         * @return $this 
+         * @static 
+         */ 
+        public static function setHttpDriver($driver)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::setHttpDriver($driver);
+        }
+        
+        /**
+         * Returns the HTTP driver
+         * 
+         * If no http driver where defined, a PhpHttpDriver is automatically created
+         *
+         * @return \DebugBar\HttpDriverInterface 
+         * @static 
+         */ 
+        public static function getHttpDriver()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getHttpDriver();
+        }
+        
+        /**
+         * Returns collected data
+         * 
+         * Will collect the data if none have been collected yet
          *
          * @return array 
          * @static 
          */ 
-        public static function getCustomClaims()
+        public static function getData()
         {
-            return \Tymon\JWTAuth\Factory::getCustomClaims();
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getData();
         }
         
         /**
-         * Set the refresh flow flag.
+         * Returns an array of HTTP headers containing the data
          *
-         * @param bool $refreshFlow
+         * @param string $headerName
+         * @param integer $maxHeaderLength
+         * @return array 
+         * @static 
+         */ 
+        public static function getDataAsHeaders($headerName = 'phpdebugbar', $maxHeaderLength = 4096, $maxTotalHeaderLength = 250000)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getDataAsHeaders($headerName, $maxHeaderLength, $maxTotalHeaderLength);
+        }
+        
+        /**
+         * Sends the data through the HTTP headers
+         *
+         * @param bool $useOpenHandler
+         * @param string $headerName
+         * @param integer $maxHeaderLength
          * @return $this 
          * @static 
          */ 
-        public static function setRefreshFlow($refreshFlow = true)
+        public static function sendDataInHeaders($useOpenHandler = null, $headerName = 'phpdebugbar', $maxHeaderLength = 4096)
         {
-            return \Tymon\JWTAuth\Factory::setRefreshFlow($refreshFlow);
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::sendDataInHeaders($useOpenHandler, $headerName, $maxHeaderLength);
+        }
+        
+        /**
+         * Stacks the data in the session for later rendering
+         *
+         * @static 
+         */ 
+        public static function stackData()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::stackData();
+        }
+        
+        /**
+         * Checks if there is stacked data in the session
+         *
+         * @return boolean 
+         * @static 
+         */ 
+        public static function hasStackedData()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::hasStackedData();
+        }
+        
+        /**
+         * Returns the data stacked in the session
+         *
+         * @param boolean $delete Whether to delete the data in the session
+         * @return array 
+         * @static 
+         */ 
+        public static function getStackedData($delete = true)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getStackedData($delete);
+        }
+        
+        /**
+         * Sets the key to use in the $_SESSION array
+         *
+         * @param string $ns
+         * @return $this 
+         * @static 
+         */ 
+        public static function setStackDataSessionNamespace($ns)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::setStackDataSessionNamespace($ns);
+        }
+        
+        /**
+         * Returns the key used in the $_SESSION array
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getStackDataSessionNamespace()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::getStackDataSessionNamespace();
+        }
+        
+        /**
+         * Sets whether to only use the session to store stacked data even
+         * if a storage is enabled
+         *
+         * @param boolean $enabled
+         * @return $this 
+         * @static 
+         */ 
+        public static function setStackAlwaysUseSessionStorage($enabled = true)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::setStackAlwaysUseSessionStorage($enabled);
+        }
+        
+        /**
+         * Checks if the session is always used to store stacked data
+         * even if a storage is enabled
+         *
+         * @return boolean 
+         * @static 
+         */ 
+        public static function isStackAlwaysUseSessionStorage()
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::isStackAlwaysUseSessionStorage();
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function offsetSet($key, $value)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::offsetSet($key, $value);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function offsetGet($key)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::offsetGet($key);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function offsetExists($key)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::offsetExists($key);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function offsetUnset($key)
+        {
+            //Method inherited from \DebugBar\DebugBar            
+            return \Barryvdh\Debugbar\LaravelDebugbar::offsetUnset($key);
         }
          
     }
@@ -13042,6 +13078,308 @@ namespace Laravel\Socialite\Facades {
         {
             //Method inherited from \Illuminate\Support\Manager            
             return \Laravel\Socialite\SocialiteManager::getDrivers();
+        }
+         
+    }
+ 
+}
+
+namespace Spatie\Fractal { 
+
+    class FractalFacade {
+        
+        /**
+         * 
+         *
+         * @param null|mixed $data
+         * @param null|callable|\League\Fractal\TransformerAbstract $transformer
+         * @param null|\League\Fractal\Serializer\SerializerAbstract $serializer
+         * @return \Spatie\Fractalistic\Fractal 
+         * @static 
+         */ 
+        public static function create($data = null, $transformer = null, $serializer = null)
+        {
+            return \Spatie\Fractal\Fractal::create($data, $transformer, $serializer);
+        }
+        
+        /**
+         * Return a new JSON response.
+         *
+         * @param callable|int $statusCode
+         * @param callable|array $headers
+         * @param callable|int $options
+         * @return \Illuminate\Http\JsonResponse 
+         * @static 
+         */ 
+        public static function respond($statusCode = 200, $headers = array(), $options = 0)
+        {
+            return \Spatie\Fractal\Fractal::respond($statusCode, $headers, $options);
+        }
+        
+        /**
+         * Set the collection data that must be transformed.
+         *
+         * @param mixed $data
+         * @param null|string|callable|\League\Fractal\TransformerAbstract $transformer
+         * @param null|string $resourceName
+         * @return $this 
+         * @static 
+         */ 
+        public static function collection($data, $transformer = null, $resourceName = null)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::collection($data, $transformer, $resourceName);
+        }
+        
+        /**
+         * Set the item data that must be transformed.
+         *
+         * @param mixed $data
+         * @param null|string|callable|\League\Fractal\TransformerAbstract $transformer
+         * @param null|string $resourceName
+         * @return $this 
+         * @static 
+         */ 
+        public static function item($data, $transformer = null, $resourceName = null)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::item($data, $transformer, $resourceName);
+        }
+        
+        /**
+         * Set the primitive data that must be transformed.
+         *
+         * @param mixed $data
+         * @param null|string|callable|\League\Fractal\TransformerAbstract $transformer
+         * @param null|string $resourceName
+         * @return $this 
+         * @static 
+         */ 
+        public static function primitive($data, $transformer = null, $resourceName = null)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::primitive($data, $transformer, $resourceName);
+        }
+        
+        /**
+         * Set the data that must be transformed.
+         *
+         * @param string $dataType
+         * @param mixed $data
+         * @param null|string|callable|\League\Fractal\TransformerAbstract $transformer
+         * @return $this 
+         * @static 
+         */ 
+        public static function data($dataType, $data, $transformer = null)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::data($dataType, $data, $transformer);
+        }
+        
+        /**
+         * Set the class or function that will perform the transform.
+         *
+         * @param string|callable|\League\Fractal\TransformerAbstract $transformer
+         * @return $this 
+         * @static 
+         */ 
+        public static function transformWith($transformer)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::transformWith($transformer);
+        }
+        
+        /**
+         * Set the serializer to be used.
+         *
+         * @param string|\League\Fractal\Serializer\SerializerAbstract $serializer
+         * @return $this 
+         * @static 
+         */ 
+        public static function serializeWith($serializer)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::serializeWith($serializer);
+        }
+        
+        /**
+         * Set a Fractal paginator for the data.
+         *
+         * @param \League\Fractal\Pagination\PaginatorInterface $paginator
+         * @return $this 
+         * @static 
+         */ 
+        public static function paginateWith($paginator)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::paginateWith($paginator);
+        }
+        
+        /**
+         * Set a Fractal cursor for the data.
+         *
+         * @param \League\Fractal\Pagination\CursorInterface $cursor
+         * @return $this 
+         * @static 
+         */ 
+        public static function withCursor($cursor)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::withCursor($cursor);
+        }
+        
+        /**
+         * Specify the includes.
+         *
+         * @param array|string $includes Array or string of resources to include.
+         * @return $this 
+         * @static 
+         */ 
+        public static function parseIncludes($includes)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::parseIncludes($includes);
+        }
+        
+        /**
+         * Specify the excludes.
+         *
+         * @param array|string $excludes Array or string of resources to exclude.
+         * @return $this 
+         * @static 
+         */ 
+        public static function parseExcludes($excludes)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::parseExcludes($excludes);
+        }
+        
+        /**
+         * Specify the fieldsets to include in the response.
+         *
+         * @param array $fieldsets array with key = resourceName and value = fields to include
+         *                                (array or comma separated string with field names)
+         * @return $this 
+         * @static 
+         */ 
+        public static function parseFieldsets($fieldsets)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::parseFieldsets($fieldsets);
+        }
+        
+        /**
+         * Set the meta data.
+         *
+         * @param $array,...
+         * @return $this 
+         * @static 
+         */ 
+        public static function addMeta()
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::addMeta();
+        }
+        
+        /**
+         * Set the resource name, to replace 'data' as the root of the collection or item.
+         *
+         * @param string $resourceName
+         * @return $this 
+         * @static 
+         */ 
+        public static function withResourceName($resourceName)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::withResourceName($resourceName);
+        }
+        
+        /**
+         * Upper limit to how many levels of included data are allowed.
+         *
+         * @param int $recursionLimit
+         * @return $this 
+         * @static 
+         */ 
+        public static function limitRecursion($recursionLimit)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::limitRecursion($recursionLimit);
+        }
+        
+        /**
+         * Perform the transformation to json.
+         *
+         * @param int $options
+         * @return string 
+         * @static 
+         */ 
+        public static function toJson($options = 0)
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::toJson($options);
+        }
+        
+        /**
+         * Perform the transformation to array.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function toArray()
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::toArray();
+        }
+        
+        /**
+         * Create fractal data.
+         *
+         * @return \League\Fractal\Scope 
+         * @throws \Spatie\Fractalistic\Exceptions\InvalidTransformation
+         * @throws \Spatie\Fractalistic\Exceptions\NoTransformerSpecified
+         * @static 
+         */ 
+        public static function createData()
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::createData();
+        }
+        
+        /**
+         * Get the resource.
+         *
+         * @return \League\Fractal\Resource\ResourceInterface 
+         * @throws \Spatie\Fractalistic\Exceptions\InvalidTransformation
+         * @static 
+         */ 
+        public static function getResource()
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::getResource();
+        }
+        
+        /**
+         * Return the name of the resource.
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getResourceName()
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::getResourceName();
+        }
+        
+        /**
+         * Convert the object into something JSON serializable.
+         *
+         * @static 
+         */ 
+        public static function jsonSerialize()
+        {
+            //Method inherited from \Spatie\Fractalistic\Fractal            
+            return \Spatie\Fractal\Fractal::jsonSerialize();
         }
          
     }
@@ -13972,6 +14310,25 @@ namespace  {
             }
          
             /**
+             * Add a subquery join clause to the query.
+             *
+             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param string $as
+             * @param string $first
+             * @param string|null $operator
+             * @param string|null $second
+             * @param string $type
+             * @param bool $where
+             * @return \Illuminate\Database\Query\Builder|static 
+             * @throws \InvalidArgumentException
+             * @static 
+             */ 
+            public static function joinSub($query, $as, $first, $operator = null, $second = null, $type = 'inner', $where = false)
+            {    
+                return \Illuminate\Database\Query\Builder::joinSub($query, $as, $first, $operator, $second, $type, $where);
+            }
+         
+            /**
              * Add a left join to the query.
              *
              * @param string $table
@@ -14002,6 +14359,22 @@ namespace  {
             }
          
             /**
+             * Add a subquery left join to the query.
+             *
+             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param string $as
+             * @param string $first
+             * @param string|null $operator
+             * @param string|null $second
+             * @return \Illuminate\Database\Query\Builder|static 
+             * @static 
+             */ 
+            public static function leftJoinSub($query, $as, $first, $operator = null, $second = null)
+            {    
+                return \Illuminate\Database\Query\Builder::leftJoinSub($query, $as, $first, $operator, $second);
+            }
+         
+            /**
              * Add a right join to the query.
              *
              * @param string $table
@@ -14029,6 +14402,22 @@ namespace  {
             public static function rightJoinWhere($table, $first, $operator, $second)
             {    
                 return \Illuminate\Database\Query\Builder::rightJoinWhere($table, $first, $operator, $second);
+            }
+         
+            /**
+             * Add a subquery right join to the query.
+             *
+             * @param \Closure|\Illuminate\Database\Query\Builder|string $query
+             * @param string $as
+             * @param string $first
+             * @param string|null $operator
+             * @param string|null $second
+             * @return \Illuminate\Database\Query\Builder|static 
+             * @static 
+             */ 
+            public static function rightJoinSub($query, $as, $first, $operator = null, $second = null)
+            {    
+                return \Illuminate\Database\Query\Builder::rightJoinSub($query, $as, $first, $operator, $second);
             }
          
             /**
@@ -15286,11 +15675,11 @@ namespace  {
 
     class View extends \Illuminate\Support\Facades\View {}
 
-    class JWTAuth extends \Tymon\JWTAuth\Facades\JWTAuth {}
-
-    class JWTFactory extends \Tymon\JWTAuth\Facades\JWTFactory {}
+    class Debugbar extends \Barryvdh\Debugbar\Facade {}
 
     class Socialite extends \Laravel\Socialite\Facades\Socialite {}
+
+    class Fractal extends \Spatie\Fractal\FractalFacade {}
  
 }
 
