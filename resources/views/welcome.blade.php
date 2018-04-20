@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel</title>
 
         <!-- Fonts -->
@@ -80,11 +80,21 @@
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
+                    <?php
+                    $user = Auth::user();
+                    if ($user)
+                    {
+                        echo " $user->name";
+                    }
+                    ?>
                 </div>
 
                 <div class="links">
                     <a href="{{url('auth/redirect')}}">Authenticate with Google</a>
+                </div>
             </div>
         </div>
+        <script src="{{ asset('js/app.js') }}"></script>
+
     </body>
 </html>
