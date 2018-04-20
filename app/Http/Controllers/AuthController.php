@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
+use App\Auth\SocialUserResolver;
+use Auth;
 use DB;
 use Socialite;
-use Illuminate\Http\Request;
+
 class AuthController extends Controller
 {
     private const CLIENT_ID = 2;
@@ -21,18 +23,9 @@ class AuthController extends Controller
     }
     public function callback()
     {
-        $user = Socialite::driver('google')->stateless()->user();
-        $proxy = Request::create(
-            '/oauth/token',
-            'POST',
-            [
-                'grant_type' => 'social',
-                'client_id' => self::CLIENT_ID,
-                'client_secret' => $this->clientSecret,
-                'network' => 'google',
-                'access_token' => $user->token,
-            ]
-        );
-        return app()->handle($proxy);
+        $authUser = Socialite::driver('google')->stateless()->user();
+        $user=SocialUserResolver::findOrCreateBySocialField($authUser);
+        Auth::login($user);
+        return redirect('/');
     }
 }

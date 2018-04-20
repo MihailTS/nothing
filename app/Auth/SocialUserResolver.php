@@ -1,6 +1,7 @@
 <?php
 namespace App\Auth;
 use App\User;
+use Auth;
 use Debugbar;
 use Log;
 use Socialite;
@@ -22,15 +23,14 @@ class SocialUserResolver implements SocialUserResolverInterface
     public function google(string $token)
     {
         $user = Socialite::driver('google')->userFromToken($token);
-        return $this->findOrCreate($user);
+        return self::findOrCreateBySocialField($user);
     }
-    protected function findOrCreate($user) : \Illuminate\Database\Eloquent\Model
+    public static function findOrCreateBySocialField($user, $socialField = 'google_id') : User
     {
-        /** @var User $model */
-        return User::firstOrCreate(['google_id' => $user->id], [
+        return User::firstOrCreate([$socialField => $user->id], [
             'name' => $user->name,
             'email' => $user->email,
-            'google_id' => $user->id,
+            $socialField => $user->id,
             'language' => $user->user['language']
         ]);
     }
