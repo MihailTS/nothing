@@ -19,4 +19,6 @@ Route::group([
 ], function () {
     Route::get('/', ['as' => 'all', 'uses' => 'PostController@all']);
     Route::get('/{post}', ['as' => 'one', 'uses' => 'PostController@one']);
+    Route::get('/{post}/like', ['as'=>'like', 'uses'=>'PostLikeController@like']);
+    Route::get('/{post}/dislike', ['as'=>'like', 'uses'=>'PostLikeController@dislike']);
 });

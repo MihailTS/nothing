@@ -40,4 +40,5 @@ class PostRepository extends BaseRepository implements PostRepositoryContract
     {
         return $this->update($post->toArray(), $id);
     }
+
 }

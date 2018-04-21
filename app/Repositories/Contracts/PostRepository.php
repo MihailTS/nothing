@@ -20,4 +20,5 @@ interface PostRepository extends RepositoryInterface
      * @return \App\Post
      */
     public function updatePost(Post $post, int $id): Post;
+
 }

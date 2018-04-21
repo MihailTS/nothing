@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Post;
-use App\Services\PostService;
+use App\Services\Contracts\PostService;
 
 class PostController extends Controller
 {
     private $postService;
 
     /**
-     * @param \App\Services\PostService $postService
+     * @param \App\Services\Contracts\PostService $postService
      */
     public function __construct(PostService $postService)
     {
