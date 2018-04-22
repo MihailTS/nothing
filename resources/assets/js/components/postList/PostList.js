@@ -17,6 +17,10 @@ class PostList extends React.Component{
                 <div className="post" key={post.id}>
                     <div className="post__content">{post.content}</div>
                     <div className="post__time">{post.time_left}</div>
+                    <div className="post__btn-panel">
+                        <button className="post__btn post__btn_like"/>
+                        <button className="post__btn post__btn_dislike"/>
+                    </div>
                 </div>
             );
         }else{
