@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Services\PostService;
+use App\Transformers\PostTransformer;
+use League\Fractal\Serializer\ArraySerializer;
 
 class PostController extends Controller
 {
@@ -24,7 +26,7 @@ class PostController extends Controller
     public function all()
     {
         $posts = $this->postService->getAll();
-        return response()->json($posts);
+        return fractal($posts, new PostTransformer())->toJson();
     }
 
     /**
@@ -35,7 +37,7 @@ class PostController extends Controller
      */
     public function one(Post $post)
     {
-        $currency = $this->postService->getOne($post);
-        return response()->json($currency);
+        $post = $this->postService->getOne($post);
+        return fractal($post, new PostTransformer())->toJson();
     }
 }
