@@ -14,9 +14,9 @@ class PostList extends React.Component{
     renderPosts(){
         if(this.props.posts){
             return this.props.posts.map((post) =>
-                <div key={post.id}>
-                    <div>{post.content}</div>
-                    <div>{post.time_to_die}</div>
+                <div className="post" key={post.id}>
+                    <div className="post__content">{post.content}</div>
+                    <div className="post__time">{post.time_left}</div>
                 </div>
             );
         }else{
@@ -25,10 +25,10 @@ class PostList extends React.Component{
     }
     render() {
         return (
-            <div>
+            <div className="post-list">
                 {
                     this.props.isLoading &&
-                    <div>
+                    <div className="post-list__loader">
                         Loading!
                     </div>
                 }

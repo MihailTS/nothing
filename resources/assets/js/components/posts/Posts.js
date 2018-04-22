@@ -4,7 +4,7 @@ import PostList from '../postList/PostList'
 export default class Posts extends React.Component{
     render(){
         return (
-            <div id="posts-list">
+            <div className="posts-wrapper">
                 <PostList/>
             </div>
         )
