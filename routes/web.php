@@ -16,3 +16,5 @@ Route::get('/', function () {
 });
 Route::get('auth/redirect', 'AuthController@redirect');
 Route::get('auth/callback', 'AuthController@callback');
+
+Route::get('posts',function(){return view('posts');});
