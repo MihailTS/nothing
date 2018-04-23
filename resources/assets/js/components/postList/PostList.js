@@ -11,12 +11,6 @@ class PostList extends React.Component{
     }
 
     initialLoad() {
-        var socket = io('http://nothing.com:3000');
-        socket.on('post-channel:PostUpdateTime', (data)=>{
-            console.log(data);
-            this.props.updatePostTime(data);
-        });
-
         this.props.getPostsData(0);
     }
 

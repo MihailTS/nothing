@@ -33,7 +33,7 @@ class PostUpdateTime implements ShouldBroadcast
         return fractal()->item($this->post, new PostTransformer())->parseIncludes(['sender'])->toArray();
     }
     public function broadcastAs(){
-        return "PostUpdateTime";
+        return "PostUpdateTime".$this->post->id;
     }
     /**
      * Get the channels the event should broadcast on.

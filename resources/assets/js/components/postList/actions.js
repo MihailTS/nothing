@@ -2,6 +2,7 @@ import * as actions from "./actionTypes"
 import axios from 'axios'
 import {getQueryURL,itemsListSchema} from "../../helper";
 import {normalize} from 'normalizr';
+import io from "socket.io-client";
 
 const POSTS_URL = "/api/v1/posts";
 
@@ -26,6 +27,16 @@ export const getPostsData = (lastPostID) => dispatch => {
     axios({url: url}).then(response => {
         const normalizedData = normalize(response.data.data, itemsListSchema);
         dispatch(getPosts(normalizedData.entities.items));
+        let socket = io('http://nothing.com:3000');
+        Object.keys(normalizedData.entities.items).map(postID =>
+            {
+                socket.on('post-channel:PostUpdateTime'+postID, (data)=>{
+                    dispatch(updatePostTime(data));
+                });
+            }
+        );
+
+
     }).catch(error => {
         console.log(error);
     });

@@ -56,8 +56,8 @@ class PostLikeService implements PostLikeServiceContract
             }
 
             $this->postRepository->save($post);
+            event(new PostUpdateTime($post));
         }
-        event(new PostUpdateTime($post));
         return $post;
     }
 }
