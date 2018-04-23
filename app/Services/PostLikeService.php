@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\PostUpdateTime;
 use App\Like;
 use App\Post;
 use App\Services\Contracts\PostLikeService as PostLikeServiceContract;
@@ -56,6 +57,7 @@ class PostLikeService implements PostLikeServiceContract
 
             $this->postRepository->save($post);
         }
+        event(new PostUpdateTime($post));
         return $post;
     }
 }
