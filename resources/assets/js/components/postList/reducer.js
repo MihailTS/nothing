@@ -23,6 +23,19 @@ export default (state = initialState, action) => {
                 isLoading:true
             }
         }
+        case actions.UPDATE_POST_TIME:{
+            return{
+                ...state,
+                posts:{
+                    ...state.posts,
+                    [action.data.id]:{
+                        ...state.posts[action.data.id],
+                        time_to_die:action.data.time_to_die,
+                        time_left:action.data.time_left
+                    }
+                }
+            }
+        }
         default:
             return state;
     }

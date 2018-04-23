@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux';
 import React from 'react';
 import PostItem from './PostItem'
 import * as actions from './actions';
+import io from 'socket.io-client';
 
 class PostList extends React.Component{
     componentDidMount() {
@@ -10,21 +11,20 @@ class PostList extends React.Component{
     }
 
     initialLoad() {
+        var socket = io('http://nothing.com:3000');
+        socket.on('post-channel:PostUpdateTime', (data)=>{
+            console.log(data);
+            this.props.updatePostTime(data);
+        });
+
         this.props.getPostsData(0);
     }
 
-    like(){
-        console.log('like');
-    }
-
-    dislike(){
-        console.log('dislike');
-    }
 
     renderPosts(){
         let posts = this.props.posts;
         return Object.keys(posts).map(postID =>
-            <PostItem key={postID} like={this.like} dislike={this.dislike} post={posts[postID]}/>
+            <PostItem key={postID} like={this.props.like} dislike={this.props.dislike} post={posts[postID]}/>
         );
     }
     render() {

@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Post;
 use App\Transformers\PostTransformer;
+use Event;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -31,7 +32,9 @@ class PostUpdateTime implements ShouldBroadcast
     {
         return fractal()->item($this->post, new PostTransformer())->parseIncludes(['sender'])->toArray();
     }
-
+    public function broadcastAs(){
+        return "PostUpdateTime";
+    }
     /**
      * Get the channels the event should broadcast on.
      *
@@ -39,6 +42,6 @@ class PostUpdateTime implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['post-channel'];
+        return new Channel('post-channel');
     }
 }
