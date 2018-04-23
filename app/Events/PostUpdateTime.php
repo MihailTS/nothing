@@ -16,7 +16,7 @@ class PostUpdateTime implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $post
+    public $post;
     /**
      * Create a new event instance.
      *

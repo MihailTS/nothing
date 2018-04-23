@@ -1,6 +1,6 @@
 import * as actions from './actionTypes';
 const initialState = {
-    posts: [],
+    posts: {},
     isLoading: true
 };
 
@@ -10,10 +10,10 @@ export default (state = initialState, action) => {
         case actions.GET_POSTS: {
             return {
                 ...state,
-                posts: [
+                posts: {
                     ...state.posts,
                     ...action.posts,
-                ],
+                },
                 isLoading:false
             };
         }

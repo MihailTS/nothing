@@ -1,6 +1,7 @@
 import * as actions from "./actionTypes"
 import axios from 'axios'
-import {getQueryURL} from "../../helper";
+import {getQueryURL,itemsListSchema} from "../../helper";
+import {normalize} from 'normalizr';
 
 const POSTS_URL = "/api/v1/posts";
 
@@ -23,7 +24,8 @@ export const getPostsData = (lastPostID) => dispatch => {
 
     dispatch(startLoading());
     axios({url: url}).then(response => {
-        dispatch(getPosts(response.data.data));
+        const normalizedData = normalize(response.data.data, itemsListSchema);
+        dispatch(getPosts(normalizedData.entities.items));
     }).catch(error => {
         console.log(error);
     });

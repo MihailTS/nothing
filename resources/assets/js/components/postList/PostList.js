@@ -1,6 +1,7 @@
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import React from 'react';
+import PostItem from './PostItem'
 import * as actions from './actions';
 
 class PostList extends React.Component{
@@ -11,21 +12,20 @@ class PostList extends React.Component{
     initialLoad() {
         this.props.getPostsData(0);
     }
+
+    like(){
+        console.log('like');
+    }
+
+    dislike(){
+        console.log('dislike');
+    }
+
     renderPosts(){
-        if(this.props.posts){
-            return this.props.posts.map((post) =>
-                <div className="post" key={post.id}>
-                    <div className="post__content">{post.content}</div>
-                    <div className="post__time">{post.time_left}</div>
-                    <div className="post__btn-panel">
-                        <button className="post__btn post__btn_like"/>
-                        <button className="post__btn post__btn_dislike"/>
-                    </div>
-                </div>
-            );
-        }else{
-            return null;
-        }
+        let posts = this.props.posts;
+        return Object.keys(posts).map(postID =>
+            <PostItem key={postID} like={this.like} dislike={this.dislike} post={posts[postID]}/>
+        );
     }
     render() {
         return (
