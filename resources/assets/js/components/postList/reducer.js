@@ -1,6 +1,6 @@
 import * as actions from './actionTypes';
 const initialState = {
-    posts: [],
+    posts: {},
     isLoading: true
 };
 
@@ -10,10 +10,10 @@ export default (state = initialState, action) => {
         case actions.GET_POSTS: {
             return {
                 ...state,
-                posts: [
+                posts: {
                     ...state.posts,
                     ...action.posts,
-                ],
+                },
                 isLoading:false
             };
         }
@@ -21,6 +21,19 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 isLoading:true
+            }
+        }
+        case actions.UPDATE_POST_TIME:{
+            return{
+                ...state,
+                posts:{
+                    ...state.posts,
+                    [action.data.id]:{
+                        ...state.posts[action.data.id],
+                        time_to_die:action.data.time_to_die,
+                        time_left:action.data.time_left
+                    }
+                }
             }
         }
         default:
