@@ -3,7 +3,9 @@ import {bindActionCreators} from 'redux';
 import React from 'react';
 import PostItem from './PostItem'
 import * as actions from './actions';
-import io from 'socket.io-client';
+
+const RATE_TYPE_LIKE = 'like';
+const RATE_TYPE_DISLIKE = 'dislike';
 
 class PostList extends React.Component{
     componentDidMount() {
@@ -14,11 +16,18 @@ class PostList extends React.Component{
         this.props.getPostsData(0);
     }
 
+    like = (postID)=>{
+        this.props.changeRate(postID,RATE_TYPE_LIKE);
+    };
+
+    dislike = (postID)=>{
+        this.props.changeRate(postID,RATE_TYPE_DISLIKE);
+    };
 
     renderPosts(){
         let posts = this.props.posts;
         return Object.keys(posts).map(postID =>
-            <PostItem key={postID} like={this.props.like} dislike={this.props.dislike} post={posts[postID]}/>
+            <PostItem key={postID} like={this.like} dislike={this.dislike} post={posts[postID]}/>
         );
     }
     render() {

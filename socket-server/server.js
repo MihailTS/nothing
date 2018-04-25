@@ -5,9 +5,6 @@ var Redis = require('ioredis');
 
 var redis = new Redis();
 
-server.listen(3000, function() {
-    console.log('Server is running!');
-});
 redis.subscribe('post-channel');
 
 
