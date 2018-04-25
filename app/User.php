@@ -27,4 +27,13 @@ class User extends Authenticatable
     protected $hidden = [
     ];
 
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
+
+    public function posts(){
+        return $this->hasMany(Post::class);
+    }
+
+
 }

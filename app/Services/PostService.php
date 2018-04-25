@@ -23,6 +23,6 @@ class PostService implements PostServiceContract
 
     public function getOne(Post $post): ?Post
     {
-        return $post;
+        return $post->with('likes');
     }
 }
