@@ -36,6 +36,18 @@ export default (state = initialState, action) => {
                 }
             }
         }
+        case actions.SET_POST_RATED:{
+            return{
+                ...state,
+                posts:{
+                    ...state.posts,
+                    [action.postID]:{
+                        ...state.posts[action.postID],
+                        rated:action.rateType
+                    }
+                }
+            }
+        }
         default:
             return state;
     }

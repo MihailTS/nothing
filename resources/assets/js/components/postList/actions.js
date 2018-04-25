@@ -5,21 +5,19 @@ import {normalize} from 'normalizr';
 import io from "socket.io-client";
 
 const POSTS_URL = "/api/v1/posts";
+const socket = io(':3000');
+
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+let token = document.head.querySelector('meta[name="csrf-token"]');
+if (token) {
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
 export const getPostsData = (lastPostID) => dispatch => {
     let url;
     let urlParams = {};
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    let token = document.head.querySelector('meta[name="csrf-token"]');
-    if (token) {
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-    } else {
-        console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-    }
-    /*urlParams.head = head ? head : "null";
-    if (loadingData && loadingData.currentPage > 0) {
-        urlParams.page = loadingData.currentPage + 1;
-    }*/
 
     url = getQueryURL(POSTS_URL, urlParams);
 
@@ -27,7 +25,7 @@ export const getPostsData = (lastPostID) => dispatch => {
     axios({url: url}).then(response => {
         const normalizedData = normalize(response.data.data, itemsListSchema);
         dispatch(getPosts(normalizedData.entities.items));
-        let socket = io('http://nothing.com:3000');
+        
         Object.keys(normalizedData.entities.items).map(postID =>
             {
                 socket.on('post-channel:PostUpdateTime'+postID, (data)=>{
@@ -35,8 +33,6 @@ export const getPostsData = (lastPostID) => dispatch => {
                 });
             }
         );
-
-
     }).catch(error => {
         console.log(error);
     });
@@ -50,40 +46,22 @@ export const getPosts = (posts) => ({
     posts
 });
 
-export const like = (postID) => dispatch => {
-    let postURL = POSTS_URL+"/"+postID+"/like";
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    let token = document.head.querySelector('meta[name="csrf-token"]');
-    if (token) {
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-    } else {
-        console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-    }
+export const changeRate = (postID, type) => dispatch =>{
+    let postURL = `${POSTS_URL}/${postID}"/${type}`;
+
     axios({url: postURL}).then(response => {
         console.log(response);
-        //dispatch(setLiked(postID));
+        dispatch(setRated(postID,type));
     }).catch(error => {
         console.log(error);
     });
 };
 
-
-export const dislike = (postID) => dispatch => {
-    let postURL = POSTS_URL+"/"+postID+"/dislike";
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    let token = document.head.querySelector('meta[name="csrf-token"]');
-    if (token) {
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-    } else {
-        console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-    }
-    axios({url: postURL}).then(response => {
-        console.log(response);
-        //dispatch(setDisliked(postID));
-    }).catch(error => {
-        console.log(error);
-    });
-};
+export const setRated = (postID,type)=>({
+    type: actions.SET_POST_RATED,
+    rateType:type,
+    postID
+});
 
 export const updatePostTime = (data)=>({
     type: actions.UPDATE_POST_TIME,
