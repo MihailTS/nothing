@@ -4,7 +4,7 @@ namespace App\Http\Requests\Contracts;
 
 interface PostListRequest
 {
-    public function getFrom():int;
+    public function getFrom():?int;
 
     public function getRawFilter():string;
 

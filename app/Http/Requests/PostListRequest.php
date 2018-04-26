@@ -25,13 +25,13 @@ class PostListRequest extends FormRequest  implements PostListRequestContract
     public function rules()
     {
         return [
-            'from' => 'integer',
+            'from' => 'integer|exists:posts,id',
             'filter' => 'string',
         ];
     }
 
 
-    public function getFrom():int
+    public function getFrom():?int
     {
         return $this->get('from');
     }
