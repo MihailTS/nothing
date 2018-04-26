@@ -41,7 +41,7 @@ class PostTransformer extends TransformerAbstract
             'content' => $post->content,
             'time_to_die' => $post->time_to_die->format('Y-m-d H:i:s'),
             'time_left' => $this->transformTimeLeft($post->time_to_die),
-            'user' => $post->user,
+            'user' => $post->user->id,
             'rated'=>$rated
         ];
     }

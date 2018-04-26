@@ -1,20 +1,24 @@
 import * as actions from './actionTypes';
 const initialState = {
     posts: {},
-    isLoading: true
+    isLoading: true,
+    lastID: 0
 };
 
 export default (state = initialState, action) => {
     console.log(action);
     switch (action.type) {
         case actions.GET_POSTS: {
+            let maxID = Object.keys(action.posts)
+                .reduce((a, b) => action.posts[a] > action.posts[b] ? a : b);
             return {
                 ...state,
                 posts: {
                     ...state.posts,
                     ...action.posts,
                 },
-                isLoading:false
+                isLoading:false,
+                lastID: maxID
             };
         }
         case actions.START_LOADING:{
