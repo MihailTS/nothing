@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
         Post::truncate();
 
         factory(User::class)->create();
-        factory(Post::class, 10)->create();
+        factory(Post::class, 100)->create();
     }
 }

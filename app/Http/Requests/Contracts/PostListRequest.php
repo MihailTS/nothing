@@ -10,5 +10,5 @@ interface PostListRequest
 
     public function getFilter():array;
 
-    public function getFilterParam(string $param, string $cast = 'string'):?mixed;
+    public function getFilterParam($param, $cast = 'string');
 }

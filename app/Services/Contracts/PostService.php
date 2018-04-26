@@ -9,9 +9,9 @@ interface PostService
     /**
      * Get all posts list.
      *
-     * @return \Illuminate\Support\Collection
+     * @param ?int $fromID
      */
-    public function getAll(): Collection;
+    public function getPosts(?int $fromID);
 
     /**
      * Get the one post.
@@ -20,4 +20,6 @@ interface PostService
      * @return \App\Post|null
      */
     public function getOne(Post $post): ?Post;
+
+    public function getList($criteria, $limit);
 }

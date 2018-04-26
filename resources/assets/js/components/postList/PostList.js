@@ -13,7 +13,7 @@ class PostList extends React.Component{
     }
 
     initialLoad() {
-        this.props.getPostsData(0);
+        this.props.getPostsData();
     }
 
     like = (postID)=>{
@@ -30,6 +30,10 @@ class PostList extends React.Component{
             <PostItem key={postID} like={this.like} dislike={this.dislike} post={posts[postID]}/>
         );
     }
+
+    loadMorePosts = ()=>{
+        this.props.getPostsData(this.props.lastID);
+    };
     render() {
         return (
             <div className="post-list">
@@ -42,6 +46,7 @@ class PostList extends React.Component{
                 {
                     this.renderPosts()
                 }
+                <div onClick={this.loadMorePosts} style={{height:'20px',width:'20px','background':'red'}}/>
             </div>
         );
     }
@@ -50,7 +55,8 @@ class PostList extends React.Component{
 function mapStateToProps(state) {
     return {
         posts: state.postsListState.posts,
-        isLoading: state.postsListState.isLoading
+        isLoading: state.postsListState.isLoading,
+        lastID: state.postsListState.lastID
     };
 }
 

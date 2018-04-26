@@ -25,7 +25,7 @@ class PostListRequest extends FormRequest  implements PostListRequestContract
     public function rules()
     {
         return [
-            'from' => 'integer|exists:posts,id',
+            'from' => 'integer',
             'filter' => 'string',
         ];
     }
@@ -45,12 +45,8 @@ class PostListRequest extends FormRequest  implements PostListRequestContract
         return explode(',',$this->getRawFilter());
     }
 
-    /**
-     * @param string $param
-     * @param string $cast
-     * @return mixed|null
-     */
-    public function getFilterParam(string $param, string $cast = 'string'):?mixed
+
+    public function getFilterParam($param, $cast = 'string')
     {
         $filter = $this->getFilter();
 

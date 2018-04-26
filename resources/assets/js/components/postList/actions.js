@@ -19,6 +19,9 @@ export const getPostsData = (lastPostID) => dispatch => {
     let url;
     let urlParams = {};
 
+    if(lastPostID){
+        urlParams.from=lastPostID;
+    }
     url = getQueryURL(POSTS_URL, urlParams);
 
     dispatch(startLoading());

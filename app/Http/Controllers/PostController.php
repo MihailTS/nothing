@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostListRequest;
 use App\Post;
-use App\Services\PostService;
+use App\Services\Contracts\PostService;
 use App\Transformers\PostTransformer;
 use League\Fractal\Serializer\ArraySerializer;
 
@@ -12,7 +13,7 @@ class PostController extends Controller
     private $postService;
 
     /**
-     * @param \App\Services\PostService $postService
+     * @param PostService $postService
      */
     public function __construct(PostService $postService)
     {
@@ -23,9 +24,11 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function all()
+    public function all(PostListRequest $request)
     {
-        $posts = $this->postService->getAll();
+        $fromPostID = $request->getFrom();
+
+        $posts = $this->postService->getPosts($fromPostID);
         return fractal($posts, new PostTransformer())->toJson();
     }
 
