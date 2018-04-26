@@ -1,4 +1,5 @@
 import {connect} from 'react-redux';
+import ReactDOM from 'react-dom';
 import {bindActionCreators} from 'redux';
 import React from 'react';
 import PostItem from './PostItem'
@@ -10,8 +11,12 @@ const RATE_TYPE_DISLIKE = 'dislike';
 class PostList extends React.Component{
     componentDidMount() {
         this.initialLoad();
-    }
+        window.addEventListener('scroll', this.loadByScroll);
 
+    }
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.loadByScroll);
+    }
     initialLoad() {
         this.props.getPostsData();
     }
@@ -31,6 +36,19 @@ class PostList extends React.Component{
         );
     }
 
+    loadByScroll = () => {
+        if (
+            this.props.posts &&
+            !this.props.isLoading
+        ) {
+            let bottomPosition = ReactDOM.findDOMNode(this)
+                .getBoundingClientRect().bottom - window.innerHeight;
+            if (bottomPosition <= 200) {
+                this.loadMorePosts();
+            }
+        }
+    };
+
     loadMorePosts = ()=>{
         this.props.getPostsData(this.props.lastID);
     };
@@ -38,15 +56,14 @@ class PostList extends React.Component{
         return (
             <div className="post-list">
                 {
+                    this.renderPosts()
+                }
+                {
                     this.props.isLoading &&
                     <div className="post-list__loader">
                         Loading!
                     </div>
                 }
-                {
-                    this.renderPosts()
-                }
-                <div onClick={this.loadMorePosts} style={{height:'20px',width:'20px','background':'red'}}/>
             </div>
         );
     }
