@@ -35,12 +35,13 @@ class PostTransformer extends TransformerAbstract
                     break;
             }
         }
-
+        $transformedTimeLeft = $this->transformTimeLeft($post->time_to_die);
         return [
             'id' => $post->id,
             'content' => $post->content,
             'time_to_die' => $post->time_to_die->format('Y-m-d H:i:s'),
-            'time_left' => $this->transformTimeLeft($post->time_to_die),
+            'time_left' => $transformedTimeLeft['time_left'],
+            'time_left_ext' => $transformedTimeLeft['time_left_ext'],
             'user' => $post->user->id,
             'rated'=>$rated
         ];
@@ -48,7 +49,16 @@ class PostTransformer extends TransformerAbstract
 
     public function transformTimeLeft(Carbon $timeToDie){
         $diff = Carbon::now()->diff($timeToDie,false);
-        $resultTime = (($diff->invert)?"-":"").$diff->format('%H:%I:%S');
-        return $resultTime;
+        $resultTime = (($diff->invert)?"":"").$diff->format('%H:%I:%S');
+        return [
+            'time_left'=>$resultTime,
+            'time_left_ext'=>[
+                'invert' => (int)$diff->invert,
+                'days' => (int)$diff->d,
+                'hours' => (int)$diff->h,
+                'minutes' => (int)$diff->i,
+                'seconds' => (int)$diff->s
+            ]
+        ];
     }
 }

@@ -34,12 +34,36 @@ export const getPostsData = (lastPostID) => dispatch => {
                 socket.on('post-channel:PostUpdateTime'+postID, (data)=>{
                     dispatch(updatePostTime(data));
                 });
+                setInterval(()=>(dispatch(countDown(postID))),1000);
             }
         );
     }).catch(error => {
         console.log(error);
     });
 };
+
+/*
+export const countDown = (posts)=>{
+    if(posts){
+        Object.keys(posts).map((key)=>{
+            posts[key] = countDownPost(posts[key]);
+        });
+        return {
+            type:actions.COUNT_DOWN,
+            post:posts
+        }
+    }
+};
+*/
+
+export const countDown = (postID) => {
+    return {
+        type:actions.COUNT_DOWN,
+        postID
+    }
+};
+
+
 
 export const startLoading = () => ({
     type: actions.START_LOADING
