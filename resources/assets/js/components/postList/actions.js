@@ -42,19 +42,6 @@ export const getPostsData = (lastPostID) => dispatch => {
     });
 };
 
-/*
-export const countDown = (posts)=>{
-    if(posts){
-        Object.keys(posts).map((key)=>{
-            posts[key] = countDownPost(posts[key]);
-        });
-        return {
-            type:actions.COUNT_DOWN,
-            post:posts
-        }
-    }
-};
-*/
 
 export const countDown = (postID) => {
     return {
@@ -62,8 +49,6 @@ export const countDown = (postID) => {
         postID
     }
 };
-
-
 
 export const startLoading = () => ({
     type: actions.START_LOADING

@@ -49,7 +49,7 @@ class PostTransformer extends TransformerAbstract
 
     public function transformTimeLeft(Carbon $timeToDie){
         $diff = Carbon::now()->diff($timeToDie,false);
-        $resultTime = (($diff->invert)?"":"").$diff->format('%H:%I:%S');
+        $resultTime = $diff->format('%H:%I:%S');
         return [
             'time_left'=>$resultTime,
             'time_left_ext'=>[
