@@ -34,11 +34,20 @@ export const getPostsData = (lastPostID) => dispatch => {
                 socket.on('post-channel:PostUpdateTime'+postID, (data)=>{
                     dispatch(updatePostTime(data));
                 });
+                setInterval(()=>(dispatch(countDown(postID))),1000);
             }
         );
     }).catch(error => {
         console.log(error);
     });
+};
+
+
+export const countDown = (postID) => {
+    return {
+        type:actions.COUNT_DOWN,
+        postID
+    }
 };
 
 export const startLoading = () => ({
