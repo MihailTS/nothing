@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\Contracts;
 
+use App\Http\Requests\PostListRequest;
 use App\Post;
 use Illuminate\Support\Collection;
 
@@ -9,17 +10,16 @@ interface PostService
     /**
      * Get all posts list.
      *
-     * @param ?int $fromID
+     * @param PostListRequest $request
      */
-    public function getPosts(?int $fromID);
+    public function getPosts(PostListRequest $request);
 
     /**
      * Get the one post.
      *
      * @param Post $post
-     * @return \App\Post|null
      */
-    public function getOne(Post $post): ?Post;
+    public function getOne(Post $post);
 
-    public function getList($criteria, $limit);
+    public function getList($limit, $arCriteria);
 }

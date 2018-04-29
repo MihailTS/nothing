@@ -12,8 +12,20 @@ namespace App{
 /**
  * App\Like
  *
+ * @property int $id
+ * @property int $post_id
+ * @property int $user_id
+ * @property int $type
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
  * @property-read \App\Post $post
  * @property-read \App\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Like whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Like whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Like wherePostId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Like whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Like whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Like whereUserId($value)
  */
 	class Like extends \Eloquent {}
 }
@@ -28,6 +40,8 @@ namespace App{
  * @property int $user_id
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Like[] $likes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Tag[] $tags
  * @property-read \App\User $user
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereCreatedAt($value)
@@ -37,6 +51,20 @@ namespace App{
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Post whereUserId($value)
  */
 	class Post extends \Eloquent {}
+}
+
+namespace App{
+/**
+ * App\Tag
+ *
+ * @property string $name
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tag whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tag whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Tag whereUpdatedAt($value)
+ */
+	class Tag extends \Eloquent {}
 }
 
 namespace App{
@@ -51,7 +79,9 @@ namespace App{
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Client[] $clients
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Like[] $likes
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Post[] $posts
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Passport\Token[] $tokens
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\User whereEmail($value)

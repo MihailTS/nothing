@@ -40,15 +40,20 @@ class PostListRequest extends FormRequest  implements PostListRequestContract
      * get filter items array
      * @return array
      */
-    public function getFilter():array
+    public function getTags():?array
     {
-        return explode(',',$this->getRawFilter());
+        $rawTags = $this->getRawTags();
+        if($rawTags){
+            return explode(',',$rawTags);
+        }else{
+            return [];
+        }
     }
 
 
-    public function getFilterParam($param, $cast = 'string')
+    public function getTag($param, $cast = 'string')
     {
-        $filter = $this->getFilter();
+        $filter = $this->getTags();
 
         if(!isset($filter[$param])){
             return null;
@@ -59,8 +64,8 @@ class PostListRequest extends FormRequest  implements PostListRequestContract
 
         return $value;
     }
-    public function getRawFilter():string
+    public function getRawTags():?string
     {
-        return $this->get('filter');
+        return $this->get('tags');
     }
 }

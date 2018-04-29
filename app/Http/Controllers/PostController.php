@@ -19,16 +19,16 @@ class PostController extends Controller
     {
         $this->postService = $postService;
     }
+
     /**
      * Get all currencies list.
      *
+     * @param PostListRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function all(PostListRequest $request)
     {
-        $fromPostID = $request->getFrom();
-
-        $posts = $this->postService->getPosts($fromPostID);
+        $posts = $this->postService->getPosts($request);
         return fractal($posts, new PostTransformer())->toJson();
     }
 

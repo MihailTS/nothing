@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 use App\Criteria\PostsFromIDCriteria;
+use App\Criteria\PostTagCriteria;
+use App\Http\Requests\PostListRequest;
 use App\Post;
 use Doctrine\Common\Collections\Criteria;
 use Illuminate\Support\Collection;
@@ -19,26 +21,33 @@ class PostService implements PostServiceContract
     {
         $this->postRepository = $postRepository;
     }
-    public function getPosts(?int $fromID)
+    public function getPosts(PostListRequest $request)
     {
-        $criteria = false;
+        $fromID = $request->getFrom();
+        $tags = $request->getTags();
+
+        $criteria = [];
         if($fromID){
-            $criteria = new PostsFromIDCriteria($fromID);
+            $criteria[] = new PostsFromIDCriteria($fromID);
         }
-        return $this->getList($criteria, self::PAGE_LIMIT);
+        foreach($tags as $tag){
+            $criteria[] = new PostTagCriteria($tag);
+        }
+
+        return $this->getList(self::PAGE_LIMIT, $criteria);
 
     }
 
-    public function getList($criteria, $limit){
-        if($criteria){
-            $this->postRepository->pushCriteria($criteria);
+    public function getList($limit, $arCriteria){
+        foreach($arCriteria as $criterion){
+            $this->postRepository->pushCriteria($criterion);
         }
         $result = $this->postRepository->paginate($limit);
 
         return $result;
     }
 
-    public function getOne(Post $post): ?Post
+    public function getOne(Post $post)
     {
         return $post->with('likes');
     }
